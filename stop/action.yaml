@@ -1,0 +1,64 @@
+---
+name: Stop EC2 actions runner
+description: Deregisters and terminates a self-hosted GitHub actions repository runner
+
+inputs:
+  aws-region:
+    description: AWS region, e.g. eu-west-1
+    required: true
+  aws-access-key-id:
+    description: AWS access key ID (pass via GitHub secret). Required only if **not** using OIDC
+    required: false
+  aws-secret-access-key:
+    description: AWS secret access key (pass via GitHub secret). Required only if **not** using OIDC
+    required: false
+  aws-role-to-assume:
+    description: AWS IAM role (ARN) to assume, for terminating the instance. Required if using OIDC (AssumeRoleWithWebIdentity)
+    required: false
+  github-token:
+    description: GitHub auth token (PAT with repo scope, pass via GitHub secret). Optional if using ephemeral runners
+    required: false
+  github-repo:
+    description: GitHub repository, e.g. ghost/example. Optional, defaults to the repository where the workflow is run
+    default: ${{ github.repository }}
+    required: false
+  runner-id:
+    description: GitHub repository runner ID, e.g. 53. Optional if using ephemeral runners
+    required: false
+  instance-id:
+    description: EC2 instance id, e.g. i-0ab3a789090bd84c7
+    required: true
+    
+
+runs:
+  using: composite
+  steps:
+
+    - id: main
+      shell: bash
+      run: |
+        # We do not fail the job on missing runner ID, because offline and ephemeral runners are automatically deregistered
+        if [ -n "$RUNNER_ID" ]; then
+            echo "Deregistering GitHub repository runner: $RUNNER_ID ..."
+            gh api -X DELETE "repos/$GH_REPO/actions/runners/$RUNNER_ID" \
+              || echo "WARN: Failed to deregister GitHub repository runner (GitHub API call failed)"
+        fi
+        
+        # Failure to destroy the EC2 instance will incur unnecessary costs, so we fail the job to ensure the user notices
+        if [ -z "$INSTANCE_ID" ]; then
+            echo "ERROR: Unable to destroy EC2 instance (instance ID not available)"
+            exit 1
+        else
+            echo "Destroying EC2 instance: $INSTANCE_ID ..."
+            cd $GITHUB_WORKSPACE/ec2-actions-runner/terraform/modules/aws_instance
+            export TF_VAR_aws_region=$AWS_REGION
+            terraform init
+            terraform import aws_instance.instance $INSTANCE_ID
+            terraform destroy --auto-approve
+            echo "Repository runner destroyed"
+        fi
+      env:
+        AWS_REGION:   ${{ inputs.aws-region }}
+        RUNNER_ID:    ${{ inputs.runner-id }}
+        GH_REPO:      ${{ inputs.github-repo }}
+        INSTANCE_ID:  ${{ inputs.instance-id }}

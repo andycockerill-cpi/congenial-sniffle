@@ -12,6 +12,13 @@ jobs:
   start-runner:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Terraform code
+        uses: actions/checkout@v2
+        with:
+         repository: andycockerill-cpi/congenial-sniffle
+         token: ${{ secrets.GH_PAT }}
+         path: ec2-actions-runner
+
       - name: Start EC2 runner
         id: start-runner
         uses: andycockerill-cpi/congenial-sniffle/start@v0.0.1

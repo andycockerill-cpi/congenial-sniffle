@@ -128,7 +128,7 @@ runs:
         SERVER_TYPE: ${{ inputs.server_type }}
         GH_TOKEN: ${{ inputs.github-token }}
         AWS_DEFAULT_REGION: ${{ inputs.aws-region }}
-        VPC_SECURITY_GROUP_IDS: ${{ inputs.vpc_security_group_ids }}
+        VPC_SECURITY_GROUP_IDS: ${{ inputs.vpc-security-group-ids }}
         GH_REPO: ${{ inputs.github-repo }}
         RUNNER_HOME: ${{ inputs.runner-home }}
         RUNNER_USER: ${{ inputs.runner-user }}

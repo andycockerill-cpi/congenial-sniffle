@@ -31,3 +31,8 @@ variable "runner_token" {
   type = string
   default = "value"
 }
+
+variable "aws_region" {
+  type = string
+  default = "value"
+}

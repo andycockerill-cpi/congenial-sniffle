@@ -13,9 +13,8 @@ resource "aws_instance" "instance" {
     tags = {
       Name = "GitHubTest"
     }
-}
 
-user_data   = <<EOF
+    user_data   = <<EOF
   #cloud-config
   runcmd:
     - cd "${var.runner_home}"
@@ -24,3 +23,4 @@ user_data   = <<EOF
     - ./svc.sh install "${var.runner_user}"
     - ./svc.sh start
   EOF
+}

@@ -24,7 +24,7 @@ inputs:
   instance_type:
     description: The server type, i.e. t2.micro
     required: true
-  vpc_security_group_ids:
+  vpc-security-group-ids:
     description: The security group ID's to use
     required: true
   github-token:
@@ -91,7 +91,7 @@ runs:
         export TF_VAR_ami=$AMI
         export TF_VAR_instance_type=$SERVER_TYPE
         export TF_VAR_aws_region=$AWS_DEFAULT_REGION
-        export TF_VAR_vpc_security_group_ids=$HCLOUD_TOKEN
+        export TF_VAR_vpc_security_group_ids=$VPC_SECURITY_GROUP_IDS
         export TF_VAR_runner_home=$RUNNER_HOME
         export TF_VAR_runner_user=$RUNNER_USER
         export TF_VAR_extra_flags=$extra_flags

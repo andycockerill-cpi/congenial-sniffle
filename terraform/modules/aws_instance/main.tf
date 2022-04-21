@@ -6,7 +6,6 @@ resource "random_shuffle" "subnets" {
 resource "aws_instance" "instance" {
     ami                    = var.ami
     instance_type          = var.instance_type
-    iam_instance_profile   = var.iam_instance_profile
     vpc_security_group_ids = var.vpc_security_group_ids
     subnet_id              = random_shuffle.subnets.result[0]
 

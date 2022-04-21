@@ -1,6 +1,5 @@
 variable "ami"                    {}
 variable "instance_type"          {}
-variable "iam_instance_profile"   {}
 variable "vpc_security_group_ids" {
     description = "Description"
     type        = list(string)

@@ -1,36 +1,29 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  start-runner:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    permissions:
+      id-token: write
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Start EC2 runner
+        id: start-runner
+        uses: andycockerill-cpi/congenial-sniffle/start@v0.0.1
+        with:
+          aws-region: us-west-2
+          ami: ami-03f051291e191660d
+          instance_type: t2.micro
+          vpc_security_group_ids: sg-04bbd3c02eadb42d5
+          subnets: '[ "subnet-043d3e6e6af5cf5dd","subnet-0b8eb2718059ffa6f","subnet-0d3ff0362c8fab2ba" ]'
+          aws-role-to-assume: arn:aws:iam::910645933055:role/cp-embedded-ore-global-github-runner-assume-role
+          github-token: ${{ secrets.GH_ACCESS_TOKEN }}
+    outputs:
+      instance-id: ${{ steps.start-runner.outputs.instance-id }}

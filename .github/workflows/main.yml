@@ -22,8 +22,9 @@ jobs:
           ami: ami-03f051291e191660d
           instance_type: t2.micro
           vpc_security_group_ids: sg-04bbd3c02eadb42d5
-          subnets: '[ "subnet-043d3e6e6af5cf5dd","subnet-0b8eb2718059ffa6f","subnet-0d3ff0362c8fab2ba" ]'
-          aws-role-to-assume: arn:aws:iam::910645933055:role/cp-embedded-ore-global-github-runner-assume-role
+          subnets:  subnet-043d3e6e6af5cf5dd, subnet-0b8eb2718059ffa6f, subnet-0d3ff0362c8fab2ba
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           github-token: ${{ secrets.GH_ACCESS_TOKEN }}
     outputs:
       instance-id: ${{ steps.start-runner.outputs.instance-id }}

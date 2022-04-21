@@ -21,7 +21,7 @@ jobs:
 
       - name: Start EC2 runner
         id: start-runner
-        uses: andycockerill-cpi/congenial-sniffle/start@v0.0.1
+        uses: andycockerill-cpi/congenial-sniffle/start@v0.0.2
         with:
           aws-region: us-west-2
           ami: ami-03f051291e191660d

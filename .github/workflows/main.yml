@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
         with:
          repository: andycockerill-cpi/congenial-sniffle
-         token: ${{ secrets.GH_PAT }}
+         token: ${{ secrets.GH_ACCESS_TOKEN }}
          path: ec2-actions-runner
 
       - name: Start EC2 runner

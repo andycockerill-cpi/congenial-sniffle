@@ -89,7 +89,7 @@ runs:
         cd $GITHUB_WORKSPACE/ec2-actions-runner/terraform/modules/aws_instance
         export TF_VAR_subnets=$SUBNETS
         export TF_VAR_ami=$AMI
-        export TF_VAR_instance_type=$INSTANCE_TYPE
+        export TF_VAR_instance_types=$INSTANCE_TYPE
         export TF_VAR_aws_region=$AWS_DEFAULT_REGION
         export TF_VAR_vpc_security_group_ids=$VPC_SECURITY_GROUP_IDS
         export TF_VAR_runner_home=$RUNNER_HOME

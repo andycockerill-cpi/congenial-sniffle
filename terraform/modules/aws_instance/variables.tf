@@ -1,4 +1,7 @@
-variable "ami"                    {}
+variable "ami"                    {
+  type = string
+  default = ""
+}
 variable "instance_types"         {
   type = list(string)
   description = "an instance type to assign to server"

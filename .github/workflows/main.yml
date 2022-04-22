@@ -21,7 +21,7 @@ jobs:
 
       - name: Start EC2 runner
         id: start-runner
-        uses: andycockerill-cpi/congenial-sniffle/start@v0.0.6
+        uses: andycockerill-cpi/congenial-sniffle/start@v0.0.7
         with:
           aws-region: us-west-2
           ami: ami-05c3ef1e5b4953093
@@ -52,7 +52,7 @@ jobs:
         token: ${{ secrets.GH_ACCESS_TOKEN }}
         path: ec2-actions-runner
     - name: Stop runner
-      uses: andycockerill-cpi/congenial-sniffle/stop@v0.0.6
+      uses: andycockerill-cpi/congenial-sniffle/stop@v0.0.7
       with:
         instance-id: ${{ needs.start-runner.outputs.instance-id }}
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}

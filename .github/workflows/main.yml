@@ -25,7 +25,7 @@ jobs:
         with:
           aws-region: us-west-2
           ami: ami-05c3ef1e5b4953093
-          instance_type: t2.micro
+          instance_types: '["t2.nano", "t2.micro", "t2.small"]'
           vpc-security-group-ids: '["sg-04bbd3c02eadb42d5"]'
           subnets:  '["subnet-043d3e6e6af5cf5dd", "subnet-0b8eb2718059ffa6f", "subnet-0d3ff0362c8fab2ba"]'
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -33,3 +33,27 @@ jobs:
           github-token: ${{ secrets.GH_ACCESS_TOKEN }}
     outputs:
       instance-id: ${{ steps.start-runner.outputs.instance-id }}
+
+  main:
+    needs: start-runner
+    runs-on: ${{ needs.start-runner.outputs.instance-id }}
+    steps:
+      - run: uname -a
+
+  stop-runner:
+    if: always()
+    needs: [start-runner, main]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Terraform code
+      uses: actions/checkout@v2
+      with:
+        repository: andycockerill-cpi/congenial-sniffle
+        token: ${{ secrets.GH_ACCESS_TOKEN }}
+        path: ec2-actions-runner
+    - name: Stop runner
+      uses: andycockerill-cpi/congenial-sniffle/stop@v0.0.5
+      with:
+        instance-id: ${{ needs.start-runner.outputs.instance-id }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

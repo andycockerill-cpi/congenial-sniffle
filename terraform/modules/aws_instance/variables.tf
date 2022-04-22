@@ -1,5 +1,9 @@
 variable "ami"                    {}
-variable "instance_type"          {}
+variable "instance_types"         {
+  type = list(string)
+  description = "an instance type to assign to server"
+  default     = []
+}
 variable "vpc_security_group_ids" {
     description = "Description"
     type        = list(string)
@@ -8,7 +12,7 @@ variable "vpc_security_group_ids" {
 variable subnets {
   type = list(string)
   description = "valid subnets to assign to server"
-  default     = ["subnet-043d3e6e6af5cf5dd","subnet-0b8eb2718059ffa6f","subnet-0d3ff0362c8fab2ba"]
+  default     = []
 }
 variable "runner_home"            {
   type = string

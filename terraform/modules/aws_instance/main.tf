@@ -3,9 +3,14 @@ resource "random_shuffle" "subnets" {
   result_count = 1
 }
 
+resource "random_shuffle" "instance_types" {
+  input = var.instance_types
+  result_count = 1
+}
+
 resource "aws_instance" "instance" {
     ami                    = var.ami
-    instance_type          = var.instance_type
+    instance_type          = random_shuffle.instance_types.result[0]
     vpc_security_group_ids = var.vpc_security_group_ids
     subnet_id              = random_shuffle.subnets.result[0]
 

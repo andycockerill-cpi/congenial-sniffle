@@ -21,8 +21,8 @@ inputs:
   ami:
     description: The EC2 AMI to base the server on
     required: true
-  instance_type:
-    description: The server type, i.e. t2.micro
+  instance_types:
+    description: A list of instance types to assign to the server
     required: true
   vpc-security-group-ids:
     description: The security group ID's to use
@@ -89,7 +89,7 @@ runs:
         cd $GITHUB_WORKSPACE/ec2-actions-runner/terraform/modules/aws_instance
         export TF_VAR_subnets=$SUBNETS
         export TF_VAR_ami=$AMI
-        export TF_VAR_instance_type=$SERVER_TYPE
+        export TF_VAR_instance_type=$INSTANCE_TYPE
         export TF_VAR_aws_region=$AWS_DEFAULT_REGION
         export TF_VAR_vpc_security_group_ids=$VPC_SECURITY_GROUP_IDS
         export TF_VAR_runner_home=$RUNNER_HOME
@@ -125,7 +125,7 @@ runs:
       env:
         SUBNETS: ${{ inputs.subnets }}
         AMI: ${{ inputs.ami }}
-        SERVER_TYPE: ${{ inputs.instance_type }}
+        INSTANCE_TYPE: ${{ inputs.instance_types }}
         GH_TOKEN: ${{ inputs.github-token }}
         AWS_DEFAULT_REGION: ${{ inputs.aws-region }}
         VPC_SECURITY_GROUP_IDS: ${{ inputs.vpc-security-group-ids }}

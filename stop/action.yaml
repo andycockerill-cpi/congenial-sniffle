@@ -34,6 +34,16 @@ runs:
   using: composite
   steps:
 
+    - id: auth
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-region: ${{ inputs.aws-region }}
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        role-to-assume: ${{ inputs.aws-role-to-assume }}
+        role-session-name: ec2-actions-runner-stop
+        role-duration-seconds: 900
+
     - id: main
       shell: bash
       run: |

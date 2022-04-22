@@ -18,7 +18,7 @@ resource "aws_instance" "instance" {
   cd "${var.runner_home}"
   instance_id=$(cat /var/lib/cloud/data/instance-id)
   sudo -u "${var.runner_user}" ./config.sh --unattended "${var.extra_flags}" --name "$instance_id" --url "https://github.com/${var.gh_repo}" --token "${var.runner_token}" --labels "$instance_id"
-  ./svc.sh install "${var.runner_user}"
-  ./svc.sh start
+  sudo ./svc.sh install "${var.runner_user}"
+  sudo ./svc.sh start
   EOF
 }

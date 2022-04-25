@@ -18,6 +18,9 @@ inputs:
   aws-role-to-assume:
     description: AWS IAM role (ARN) to assume, for launching the instance. Required if using OIDC (AssumeRoleWithWebIdentity)
     required: false
+  aws-launch-template:
+    description: AWS EC2 launch template (AWS CLI format, e.g. LaunchTemplateId=lt-0abcd290751193123)
+    required: true
   ami:
     description: The EC2 AMI to base the server on
     required: true
@@ -87,6 +90,7 @@ runs:
         fi
 
         cd $GITHUB_WORKSPACE/ec2-actions-runner/terraform/modules/aws_instance
+        export TF_VAR_launch_template=$LAUNCH_TEMPLATE
         export TF_VAR_subnets=$SUBNETS
         export TF_VAR_ami=$AMI
         export TF_VAR_instance_types=$INSTANCE_TYPE
@@ -123,6 +127,7 @@ runs:
         
         
       env:
+        LAUNCH_TEMPLATE: ${{ inputs.aws-launch-template }}
         SUBNETS: ${{ inputs.subnets }}
         AMI: ${{ inputs.ami }}
         INSTANCE_TYPE: ${{ inputs.instance_types }}

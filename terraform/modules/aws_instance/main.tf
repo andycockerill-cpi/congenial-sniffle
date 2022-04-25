@@ -13,6 +13,9 @@ resource "aws_instance" "instance" {
     instance_type          = random_shuffle.instance_types.result[0]
     vpc_security_group_ids = var.vpc_security_group_ids
     subnet_id              = random_shuffle.subnets.result[0]
+    launch_template {
+      id = var.launch_template_id
+    }
 
     tags = {
       Name = "GitHubTest"

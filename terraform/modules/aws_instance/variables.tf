@@ -43,3 +43,5 @@ variable "aws_region" {
   type = string
   default = "value"
 }
+
+variable "launch_template_id" {}

@@ -28,6 +28,9 @@ inputs:
   instance-id:
     description: EC2 instance id, e.g. i-0ab3a789090bd84c7
     required: true
+  aws-launch-template:
+    description: AWS EC2 launch template (AWS CLI format, e.g. LaunchTemplateId=lt-0abcd290751193123)
+    required: true
     
 
 runs:
@@ -61,6 +64,7 @@ runs:
         else
             echo "Destroying EC2 instance: $INSTANCE_ID ..."
             cd $GITHUB_WORKSPACE/ec2-actions-runner/terraform/modules/aws_instance
+            export TF_VAR_launch_template_id=$LAUNCH_TEMPLATE
             export TF_VAR_aws_region=$AWS_REGION
             terraform init
             terraform import aws_instance.instance $INSTANCE_ID
@@ -68,7 +72,8 @@ runs:
             echo "Repository runner destroyed"
         fi
       env:
-        AWS_REGION:   ${{ inputs.aws-region }}
-        RUNNER_ID:    ${{ inputs.runner-id }}
-        GH_REPO:      ${{ inputs.github-repo }}
-        INSTANCE_ID:  ${{ inputs.instance-id }}
+        LAUNCH_TEMPLATE: ${{ inputs.aws-launch-template }}
+        AWS_REGION:      ${{ inputs.aws-region }}
+        RUNNER_ID:       ${{ inputs.runner-id }}
+        GH_REPO:         ${{ inputs.github-repo }}
+        INSTANCE_ID:     ${{ inputs.instance-id }}

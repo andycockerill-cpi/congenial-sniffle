@@ -59,3 +59,4 @@ jobs:
         instance-id: ${{ needs.start-runner.outputs.instance-id }}
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-launch-template: lt-05fce14cda84fcee9
